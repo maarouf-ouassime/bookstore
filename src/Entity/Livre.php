@@ -6,6 +6,8 @@ use App\Repository\LivreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: LivreRepository::class)]
 class Livre
@@ -16,18 +18,28 @@ class Livre
     private $id;
 
     #[ORM\Column(type: 'string', length: 13)]
+    #[Assert\Isbn(
+        type: Assert\Isbn::ISBN_10,
+        message: 'This value is not valid.',
+    )]
     private $isbn;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $titre;
 
     #[ORM\Column(type: 'integer')]
+    #[Assert\Positive]
     private $nombre_pages;
 
     #[ORM\Column(type: 'date')]
     private $date_de_parution;
 
     #[ORM\Column(type: 'integer')]
+    #[Assert\Range(
+        min: 0,
+        max: 20,
+        notInRangeMessage: 'You must be between {{ min }}cm and {{ max }}cm tall to enter',
+    )]
     private $note;
 
     #[ORM\ManyToMany(targetEntity: Auteur::class, mappedBy: 'hh')]
