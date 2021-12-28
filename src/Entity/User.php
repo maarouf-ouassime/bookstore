@@ -4,35 +4,38 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
-use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
-
-
-#[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
-class User implements UserInterface
+/**
+ * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Table(name="`user`")
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ */
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private $id;
 
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
-    #[Assert\Email(
-        message: 'The email {{ value }} is not a valid email.',
-    )]
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
     private $email;
 
-    #[ORM\Column(type: 'json')]
+    /**
+     * @ORM\Column(type="json")
+     */
     private $roles = [];
 
-    #[ORM\Column(type: 'string', length: 255)]
-    #[SecurityAssert\UserPassword(
-        message: 'Wrong value for your current password',
-    )]
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     */
     private $password;
 
     public function getId(): ?int
@@ -90,17 +93,23 @@ class User implements UserInterface
     }
 
     /**
-     * This method can be removed in Symfony 6.0 - is not needed for apps that do not check user passwords.
-     *
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
-        return null;
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
     }
 
     /**
-     * This method can be removed in Symfony 6.0 - is not needed for apps that do not check user passwords.
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
      *
      * @see UserInterface
      */
@@ -116,12 +125,5 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
     }
 }

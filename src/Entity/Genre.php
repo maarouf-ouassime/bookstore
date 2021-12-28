@@ -2,26 +2,34 @@
 
 namespace App\Entity;
 
-use App\Repository\GenreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use App\Repository\GenreRepository;
+use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: GenreRepository::class)]
+/**
+ * @ORM\Entity(repositoryClass=GenreRepository::class)
+ */
 class Genre
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+
+     */
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Unique]
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $nom;
 
-    #[ORM\ManyToMany(targetEntity: Livre::class, mappedBy: 'gg')]
+    /**
+     * @ORM\ManyToMany(targetEntity=Livre::class, mappedBy="genre")
+     */
     private $livres;
 
     public function __construct()
@@ -58,7 +66,7 @@ class Genre
     {
         if (!$this->livres->contains($livre)) {
             $this->livres[] = $livre;
-            $livre->addGg($this);
+            $livre->addGenre($this);
         }
 
         return $this;
@@ -67,7 +75,7 @@ class Genre
     public function removeLivre(Livre $livre): self
     {
         if ($this->livres->removeElement($livre)) {
-            $livre->removeGg($this);
+            $livre->removeGenre($this);
         }
 
         return $this;

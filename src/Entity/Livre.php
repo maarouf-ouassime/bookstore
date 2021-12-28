@@ -2,56 +2,71 @@
 
 namespace App\Entity;
 
-use App\Repository\LivreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use App\Repository\LivreRepository;
+use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: LivreRepository::class)]
+/**
+ * @ORM\Entity(repositoryClass=LivreRepository::class)
+ */
 class Livre
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private $id;
 
-    #[ORM\Column(type: 'string', length: 13)]
-    #[Assert\Isbn(
-        type: Assert\Isbn::ISBN_10,
-        message: 'This value is not valid.',
-    )]
+    /**
+     * @ORM\Column(type="string", length=13)
+     * @Assert\Isbn(
+     *     type = "isbn13",
+     *     message = "This value is not valid."
+     * )
+     */
     private $isbn;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $titre;
 
-    #[ORM\Column(type: 'integer')]
-    #[Assert\Positive]
-    private $nombre_pages;
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\Positive
+     */
+    public $nombre_pages;
 
-    #[ORM\Column(type: 'date')]
-    private $date_de_parution;
+    /**
+     * @ORM\Column(type="date")
+     */
+    public $date_de_parution;
 
-    #[ORM\Column(type: 'integer')]
-    #[Assert\Range(
-        min: 0,
-        max: 20,
-        notInRangeMessage: 'You must be between {{ min }}cm and {{ max }}cm tall to enter',
-    )]
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $note;
 
-    #[ORM\ManyToMany(targetEntity: Auteur::class, mappedBy: 'hh')]
+    /**
+     * 
+     * @ORM\ManyToMany(targetEntity=Auteur::class, mappedBy="livre")
+     * 
+     */
     private $auteurs;
 
-    #[ORM\ManyToMany(targetEntity: Genre::class, inversedBy: 'livres')]
-    private $gg;
+    /**
+     * @ORM\ManyToMany(targetEntity=Genre::class, inversedBy="livres")
+     */
+    private $genre;
 
     public function __construct()
     {
         $this->auteurs = new ArrayCollection();
-        $this->gg = new ArrayCollection();
+        $this->genre = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,7 +98,7 @@ class Livre
         return $this;
     }
 
-    public function getNombrePages(): ?int
+    public function getNombrePages(): int
     {
         return $this->nombre_pages;
     }
@@ -131,7 +146,7 @@ class Livre
     {
         if (!$this->auteurs->contains($auteur)) {
             $this->auteurs[] = $auteur;
-            $auteur->addHh($this);
+            $auteur->addLivre($this);
         }
 
         return $this;
@@ -140,7 +155,7 @@ class Livre
     public function removeAuteur(Auteur $auteur): self
     {
         if ($this->auteurs->removeElement($auteur)) {
-            $auteur->removeHh($this);
+            $auteur->removeLivre($this);
         }
 
         return $this;
@@ -149,23 +164,23 @@ class Livre
     /**
      * @return Collection|Genre[]
      */
-    public function getGg(): Collection
+    public function getGenre(): Collection
     {
-        return $this->gg;
+        return $this->genre;
     }
 
-    public function addGg(Genre $gg): self
+    public function addGenre(Genre $genre): self
     {
-        if (!$this->gg->contains($gg)) {
-            $this->gg[] = $gg;
+        if (!$this->genre->contains($genre)) {
+            $this->genre[] = $genre;
         }
 
         return $this;
     }
 
-    public function removeGg(Genre $gg): self
+    public function removeGenre(Genre $genre): self
     {
-        $this->gg->removeElement($gg);
+        $this->genre->removeElement($genre);
 
         return $this;
     }

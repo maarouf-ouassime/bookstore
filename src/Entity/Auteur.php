@@ -2,45 +2,61 @@
 
 namespace App\Entity;
 
-use App\Repository\AuteurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: AuteurRepository::class)]
+use App\Repository\AuteurRepository;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass=AuteurRepository::class)
+ */
 class Auteur
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Unique]
-    private $nom_prenom;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
 
-    #[ORM\Column(type: 'string', length: 1)]
-    #[Assert\Choice(['M', 'F', 'm', 'f'])]
+    public $nom_prenom;
+
+    /**
+     * @ORM\Column(type="string", length=1)
+     * @Assert\Choice({"M", "F"})
+     */
     private $sexe;
 
-    #[ORM\Column(type: 'date')]
-    #[Assert\Date]
-    private $date_de_naissance;
+    /**
+     * @ORM\Column(type="date")
+     */
+    public $date_de_naissance;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Country]
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Country
+     */
     private $nationalite;
 
-    #[ORM\ManyToMany(targetEntity: Livre::class, inversedBy: 'auteurs')]
-    private $hh;
+    /**
+     * @ORM\ManyToMany(targetEntity=Livre::class, inversedBy="auteurs")
+     * 
+     */
+    private $livre;
 
     public function __construct()
     {
-        $this->hh = new ArrayCollection();
+        $this->livre = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -96,23 +112,23 @@ class Auteur
     /**
      * @return Collection|Livre[]
      */
-    public function getHh(): Collection
+    public function getLivre(): Collection
     {
-        return $this->hh;
+        return $this->livre;
     }
 
-    public function addHh(Livre $hh): self
+    public function addLivre(Livre $livre): self
     {
-        if (!$this->hh->contains($hh)) {
-            $this->hh[] = $hh;
+        if (!$this->livre->contains($livre)) {
+            $this->livre[] = $livre;
         }
 
         return $this;
     }
 
-    public function removeHh(Livre $hh): self
+    public function removeLivre(Livre $livre): self
     {
-        $this->hh->removeElement($hh);
+        $this->livre->removeElement($livre);
 
         return $this;
     }
