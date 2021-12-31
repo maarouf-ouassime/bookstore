@@ -1,20 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello LivreController!{% endblock %}
+{% block title %}Livre index{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <h1>Livre index</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Isbn</th>
+                <th>Titre</th>
+                <th>Nombre_pages</th>
+                <th>Date_de_parution</th>
+                <th>Note</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for livre in livres %}
+            <tr>
+                <td>{{ livre.id }}</td>
+                <td>{{ livre.isbn }}</td>
+                <td>{{ livre.titre }}</td>
+                <td>{{ livre.nombrePages }}</td>
+                <td>{{ livre.dateDeParution ? livre.dateDeParution|date('Y-m-d') : '' }}</td>
+                <td>{{ livre.note }}</td>
+                <td>
+                    <a href="{{ path('livre_show', {'id': livre.id}) }}">show</a>
+                    <a href="{{ path('livre_edit', {'id': livre.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/dell/bookstore/src/Controller/LivreController.php'|file_link(0) }}">src/Controller/LivreController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/dell/bookstore/templates/livre/index.html.twig'|file_link(0) }}">templates/livre/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <a href="{{ path('livre_new') }}">Create new</a>
 {% endblock %}
