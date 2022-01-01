@@ -3,41 +3,46 @@
 {% block title %}Livre index{% endblock %}
 
 {% block body %}
+<style>
+    .livres{
+        border-radius:10px;
+        box-shadow:0 4px 16px rgba(0,0,0,.25);
+        padding:16px 20px;
+    }
+    img{
+         border-radius:10px;
+        box-shadow:0 4px 16px rgba(0,0,0,.25);
+        margin:10px;
+    }
+</style>
     <h1>Livre index</h1>
+<a href="{{ path('livre_new') }}" class="btn btn-success mt-3">Ajouter nouvelle livre</a><br><br>
+<div class="card-columns">
+ {% for livre in livres %}
+  <div class="card">
+    <div class="card__header">
+      <img hight=300 width=400 src="https://source.unsplash.com/600x400/?book" alt="card__image" class="card__image" width="600">
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{ livre.titre }}</h5>
+      <p class="card-text">
+      <h6>ISBN  : {{ livre.isbn }}</h6>
+        <h6>Nombre des pages :  {{ livre.nombrePages }}</h6>
+        <h6>Note : {{ livre.note  }}</h6>
+      </p>
+      <p class="card-text"><small class="text-muted">{{ livre.dateDeParution ? livre.dateDeParution|date('Y-m-d') : '' }}</small>
+      
+                     {{ include('livre/_delete_form.html.twig') }}
+      </p>
+    </div>
+    </div>
+    {% else %}
+ 
+ 
+                <h1> no records found</h1>
+                
+    {% endfor %}
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Isbn</th>
-                <th>Titre</th>
-                <th>Nombre_pages</th>
-                <th>Date_de_parution</th>
-                <th>Note</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for livre in livres %}
-            <tr>
-                <td>{{ livre.id }}</td>
-                <td>{{ livre.isbn }}</td>
-                <td>{{ livre.titre }}</td>
-                <td>{{ livre.nombrePages }}</td>
-                <td>{{ livre.dateDeParution ? livre.dateDeParution|date('Y-m-d') : '' }}</td>
-                <td>{{ livre.note }}</td>
-                <td>
-                    <a href="{{ path('livre_show', {'id': livre.id}) }}">show</a>
-                    <a href="{{ path('livre_edit', {'id': livre.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('livre_new') }}">Create new</a>
+    
 {% endblock %}

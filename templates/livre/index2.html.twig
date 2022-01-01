@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livre index{% endblock %}
+
+{% block body %}
+
+<div class="card-columns">
+  {% for livre in livres %}
+  <div class="card">
+    <img class="card-img-top" src="{{ asset('pic/book.jpg') }}" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">{{ livre.titre }}</h5>
+      <p class="card-text">
+      <h6>ISBN  : {{ livre.isbn }}</h6>
+        <h6>Nombre des pages :  {{ livre.nombrePages }}</h6>
+        <h6>Note : {{ livre.note  }}</h6>
+      </p>
+      <p class="card-text"><small class="text-muted">{{ livre.dateDeParution ? livre.dateDeParution|date('Y-m-d') : '' }}</small>
+      {{ include('livre/_delete_form.html.twig') }}
+      </p>
+    </div>
+  </div>
+ {% else %}
+    <h1> no records found</h1>       
+    {% endfor %}
+</div>
+{% endblock %}
