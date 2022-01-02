@@ -3,11 +3,9 @@
 {% block title %}Edit Genre{% endblock %}
 
 {% block body %}
-    <h1>Edit Genre</h1>
-
-    {{ include('genre/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('genre_index') }}">back to list</a>
-
-    {{ include('genre/_delete_form.html.twig') }}
+    
+   <div class="container">
+<h1>Modifier Genre</h1>
+    {{ include('genre/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+</div>
 {% endblock %}

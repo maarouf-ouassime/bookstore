@@ -1,4 +1,8 @@
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <button class="btn btn-primary mt-3"><b>{{ button_label|default('Enregistrer') }}</b></button>
+    <a class="btn btn-warning mt-3" href="{{ path('livre_index') }}"><b>Retour</b></a>
+
+    
 {{ form_end(form) }}

@@ -55,7 +55,7 @@ class GenreController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'genre_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'genre_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(Genre $genre): Response
     {
         return $this->render('genre/show.html.twig', [
@@ -63,7 +63,7 @@ class GenreController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'genre_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'genre_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function edit(Request $request, Genre $genre, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -84,7 +84,7 @@ class GenreController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'genre_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'genre_delete', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function delete(Request $request, Genre $genre, EntityManagerInterface $entityManager, LivreRepository $LivreRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');

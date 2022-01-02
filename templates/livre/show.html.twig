@@ -3,40 +3,67 @@
 {% block title %}Livre{% endblock %}
 
 {% block body %}
-    <h1>Livre</h1>
+<style>
+    .articles{
+        border-radius:10px;
+        box-shadow:0 4px 16px rgba(0,0,0,.25);
+        padding:16px 20px;
+    }
+    img{
+         border-radius:10px;
+        box-shadow:0 4px 16px rgba(0,0,0,.25);
+        margin:10px;
+    }
+    </style>
+    <h2 class="ml-5">Livre</h2>
+   <article style="display:flex;" class="mb-5">
+    <section  class="articles mt-2 mr-2 ml-2">
+    <h4>{{ livre.titre }}</h4>
+    <div class="metadata">
+                
+        <span >
+            {% for gen in genres %}
+                <tr>
+                    <h6 class="badge bg-danger" style="padding:10px">{{ gen.nom }}</h6>
+                    
+                {% endfor %}
+        </span>
+    </div>
+    <div class="content">
+        <img src="https://picsum.photos/400/250?grayscale" alt="">
+        <h5>Date de parution :  {{ livre.dateDeParution ? livre.dateDeParution|date('Y-m-d') : '' }}</h5>
+                <h5>ISBN  : {{ livre.isbn }}</h5>
+        <h5>Nombre des pages :  {{ livre.nombrePages }}</h5>
+        <h5>Note : {{ livre.note  }}</h5>
+ 
+    </div>
+    </section>
+     <section  class="articles pt-0 mt-2 mr-2 ml-2">
+<p class="card-text">
+    <h4>Auteurs </h4>
+    <div class="card-columns">
+  {% for auteur in auteurs %}
+  <div class="card">
+   
+    <div class="card-body">
+      <h5 class="card-title">{{ auteur.nomPrenom }}</h5>
+      <p class="card-text">
+      <h6>Sexe  : {{ auteur.sexe }}</h6>
+        <h6>Nationalite :  {{ auteur.nationalite }}</h6>
+      </p>
+      <p class="card-text"><small class="text-muted">Date de Naissance :{{ auteur.dateDeNaissance ? auteur.dateDeNaissance|date('Y-m-d') : '' }}</small>
+  
+      </p>
+    </div>
+  </div>
+   
+           
+        {% endfor %}
+        </div>
+    </p>
+ </section>
+</article>
+ 
+   
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ livre.id }}</td>
-            </tr>
-            <tr>
-                <th>Isbn</th>
-                <td>{{ livre.isbn }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ livre.titre }}</td>
-            </tr>
-            <tr>
-                <th>Nombre_pages</th>
-                <td>{{ livre.nombrePages }}</td>
-            </tr>
-            <tr>
-                <th>Date_de_parution</th>
-                <td>{{ livre.dateDeParution ? livre.dateDeParution|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Note</th>
-                <td>{{ livre.note }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('livre_index') }}">back to list</a>
-
-    <a href="{{ path('livre_edit', {'id': livre.id}) }}">edit</a>
-
-    {{ include('livre/_delete_form.html.twig') }}
 {% endblock %}

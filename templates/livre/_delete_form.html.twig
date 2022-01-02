@@ -1,4 +1,7 @@
 <form method="post" action="{{ path('livre_delete', {'id': livre.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ livre.id) }}">
-    <button class="btn">Delete</button>
+    <button style="margin-right:7px" class="btn btn-danger">Supprimer</button>
+    <a href="{{ path('livre_show', {'id': livre.id}) }} " class="btn btn-success">Afficher</a>
+                    <a href="{{ path('livre_edit', {'id': livre.id}) }}" class="btn btn-info">Modifier</a>
+                     <a href="{{ path('note_edit', {'id': livre.id}) }}" class="btn btn-info">  Note  </a>
 </form>

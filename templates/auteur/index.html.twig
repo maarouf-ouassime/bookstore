@@ -2,40 +2,116 @@
 
 {% block title %}Auteur index{% endblock %}
 
+
+
 {% block body %}
-    <h1>Auteur index</h1>
+<style>
+    .card {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom_prenom</th>
-                <th>Sexe</th>
-                <th>Date_de_naissance</th>
-                <th>Nationalite</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for auteur in auteurs %}
-            <tr>
-                <td>{{ auteur.id }}</td>
-                <td>{{ auteur.nomPrenom }}</td>
-                <td>{{ auteur.sexe }}</td>
-                <td>{{ auteur.dateDeNaissance ? auteur.dateDeNaissance|date('Y-m-d') : '' }}</td>
-                <td>{{ auteur.nationalite }}</td>
-                <td>
-                    <a href="{{ path('auteur_show', {'id': auteur.id}) }}">show</a>
-                    <a href="{{ path('auteur_edit', {'id': auteur.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+.card {
+  margin: 10px;
+  box-sizing: border-box;
+  border-radius: 2px;
+  background-clip: padding-box;
+  min-height:400px;
+}
 
-    <a href="{{ path('auteur_new') }}">Create new</a>
-{% endblock %}
+.card span.card-title {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+.card .card-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.card .card-image img {
+  border-radius: 2px 2px 0 0;
+  background-clip: padding-box;
+  position: relative;
+  z-index: 0;
+}
+
+.card .card-image span.card-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 16px;
+}
+
+.card .card-content {
+  padding: 16px;
+  border-radius: 0 0 2px 2px;
+  background-clip: padding-box;
+  box-sizing: border-box;
+}
+
+.card .card-content p {
+  margin: 0;
+  color: inherit;
+}
+
+.card .card-content span.card-title {
+  line-height: 48px;
+}
+
+.card .card-action {
+  border-top: 1px solid rgba(160, 160, 160, 0.2);
+  padding: 16px;
+}
+
+.card .card-action a {
+  color: white;
+  margin-right: 16px;
+  transition: color 0.3s ease;
+ 
+  margin-right:7px;
+
+}
+
+.card .card-action a:hover {
+  color: #ffd8a6;
+  text-decoration: none;
+}
+</style>
+<a  style="margin-left:90px" href="{{ path('auteur_new') }}" class="btn btn-success mt-3"><b>Ajouter nouvelle Auteur</b></a><br><br>
+<div class="card-columns mr-4 " style="margin-left : 80px;">
+  {% for auteur in auteurs %}
+      <div class="card" style="width:345px;height:200px;border-radius:10%">
+        <div class="card-image">
+          <img class="img-responsive" src="https://picsum.photos/seed/men/345/200">
+          <span class="card-title"><b>{{ auteur.nomPrenom }}</b></span>
+        </div>
+
+        <div class="card-content">
+         <h6>Sexe  : {{ auteur.sexe }}</h6>
+        <h6>Nationalite :  {{ auteur.nationalite }}</h6>
+      </p>
+      <p class="card-text"><small class="text-muted">Date de Naissance : {{ auteur.dateDeNaissance ? auteur.dateDeNaissance|date('Y-m-d') : '' }}</small>
+      
+                  
+      </p>
+       
+      </p>
+      
+        </div>
+
+        <div class="card-action">
+          {{ include('auteur/_delete_form.html.twig') }}
+        </div>
+      </div>
+  
+    {% else %}
+ 
+ 
+                <h1> no records found</h1>
+                
+    {% endfor %}
+    </div>
+ {% endblock %}
+

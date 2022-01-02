@@ -1,10 +1,12 @@
 {% extends 'base.html.twig' %}
 {% block title %}Rechercher par date{% endblock %}
 {% block body %}
+    <div class="container">
     <h1>Rechercher par date</h1>
     <form action="showdateRes" method="GET">
     <input type="date" class="form-control mb-3" id="date1id" name="date1" />
     <input type="date" class="form-control mb-3" id="date2id" name="date2"  />
     <input type="submit" value="Rechercher" class="btn btn-success"/>
     </form> 
+    </div>
 {% endblock %}

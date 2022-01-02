@@ -15,14 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/auteur')]
 class AuteurController extends AbstractController
 {
-    #[Route('/', name: 'auteur_index', methods: ['GET'])]
-    public function index(AuteurRepository $auteurRepository): Response
-    {
-        return $this->render('auteur/index.html.twig', [
-            'auteurs' => $auteurRepository->findAll(),
-        ]);
-    }
-    #[Route('/rechercher', name: 'rechercher', methods: ['GET'])]
+    #[Route('/rechercher', name: 'rechercher')]
     public function rechercherNom(AuteurRepository $auteurRepository, Request $req): Response
     {
         $b = $req->query->get('se');
@@ -38,6 +31,15 @@ class AuteurController extends AbstractController
             'auteurs' => $a,
         ]);
     }
+
+    #[Route('/', name: 'auteur_index', methods: ['GET'])]
+    public function index(AuteurRepository $auteurRepository): Response
+    {
+        return $this->render('auteur/index.html.twig', [
+            'auteurs' => $auteurRepository->findAll(),
+        ]);
+    }
+
 
     #[Route('/new', name: 'auteur_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -60,7 +62,7 @@ class AuteurController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'auteur_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'auteur_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(Auteur $auteur, LivreRepository $livreRepository): Response
     {
         $query = $livreRepository->createQueryBuilder('s')
@@ -76,7 +78,7 @@ class AuteurController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'auteur_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'auteur_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function edit(Request $request, Auteur $auteur, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -95,7 +97,7 @@ class AuteurController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'auteur_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'auteur_delete', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function delete(Request $request, Auteur $auteur, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');

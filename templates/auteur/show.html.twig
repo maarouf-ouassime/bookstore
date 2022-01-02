@@ -3,36 +3,60 @@
 {% block title %}Auteur{% endblock %}
 
 {% block body %}
-    <h1>Auteur</h1>
+<style>
+    .articles{
+        border-radius:10px;
+        box-shadow:0 4px 16px rgba(0,0,0,.25);
+        padding:16px 20px;
+    }
+    img{
+         border-radius:10px;
+        box-shadow:0 4px 16px rgba(0,0,0,.25);
+        margin:10px;
+    }
+    </style>
+    <h2 class="ml-5">Auteur</h2>
+    
+   <article style="display:flex;" class="mb-5">
+    <section  class="articles mt-2 mr-2 ml-2">
+    <h4><i>{{ auteur.nomPrenom }}</i></h4>
+    </div>
+    <div class="content">
+        <img src="https://picsum.photos/400/250?grayscale" alt="">
+        <h5>Sexe  : {{ auteur.sexe }}</h5>
+        <h5>Date de naissance:  {{ auteur.dateDeNaissance ? auteur.dateDeNaissance|date('Y-m-d') : '' }}</h5>
+        <h5>Nationalite : {{ auteur.nationalite }}</h5>
+    </div>
+    </section>
+     <section  class="articles pt-0 mt-2 mr-2 ml-2">
+<p class="card-text">
+    <h3>Livres </h3>
+        <div class="card-columns">
+  {% for livre in livres %}
+  <div class="card">
+   
+    <div class="card-body">
+      <h5 class="card-title">{{ livre.titre }}</h5>
+      <p class="card-text">
+      <h6>ISBN  : {{ livre.isbn }}</h6>
+        <h6>Nombre des pages :  {{ livre.nombrePages }}</h6>
+        <h6>Note : {{ livre.note  }}</h6>
+      </p>
+      <p class="card-text"><small class="text-muted">Date de parution : {{ livre.dateDeParution ? livre.dateDeParution|date('Y-m-d') : '' }}</small>
+      
+                    
+      </p>
+    </div>
+  </div>
+   
+  
+    {% endfor %}
+</div>
+  
+      </p>
+ </section>
+ 
+</article>
+   
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ auteur.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom_prenom</th>
-                <td>{{ auteur.nomPrenom }}</td>
-            </tr>
-            <tr>
-                <th>Sexe</th>
-                <td>{{ auteur.sexe }}</td>
-            </tr>
-            <tr>
-                <th>Date_de_naissance</th>
-                <td>{{ auteur.dateDeNaissance ? auteur.dateDeNaissance|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Nationalite</th>
-                <td>{{ auteur.nationalite }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('auteur_index') }}">back to list</a>
-
-    <a href="{{ path('auteur_edit', {'id': auteur.id}) }}">edit</a>
-
-    {{ include('auteur/_delete_form.html.twig') }}
 {% endblock %}
