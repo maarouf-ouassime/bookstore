@@ -82,7 +82,7 @@ class LivreController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'livre_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'livre_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(Livre $livre, AuteurRepository $auteurRepository, GenreRepository $genreRepository): Response
     {
         $query = $auteurRepository->createQueryBuilder('s')
@@ -106,7 +106,7 @@ class LivreController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'livre_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'livre_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function edit(Request $request, Livre $livre, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -124,7 +124,7 @@ class LivreController extends AbstractController
             'form' => $form,
         ]);
     }
-    #[Route('/{id}/note_edit', name: 'note_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/note_edit', name: 'note_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function editNote(Request $request, Livre $livre, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -143,7 +143,7 @@ class LivreController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'livre_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'livre_delete', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function delete(Request $request, Livre $livre, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
